@@ -1,19 +1,34 @@
 const input = document.getElementById("guess-input")
 const suggestions = document.getElementById("suggestions")
 const btn = document.getElementById("guess-btn")
-const mounts = [
-    "Invincible",
-    "Mimiron's Head",
-    "Ashes of Al'ar",
-    "Pureblood Fire Hawk",
-    "Swift Spectral Tiger"
-];
-const correctMount = "Invincible"
 
+let mounts = [];
+let correctMount = null;
 let selectedMount = null;
+
+fetch("/api/daily-mount")
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        correctMount = data.name;
+        console.log("Today's mount:", correctMount);
+    });
+
+fetch("/mounts.json")
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+        mounts = data.map(function(mount) {
+            return mount.name;
+        });
+        console.log("Loaded", mounts.length, "mounts");
+    });
 
 // EVENT LISTENERS
 
+// Preview 5 mounts that are similar to what the user has inputted
 input.addEventListener("input", function() {
     const typed = input.value.toLowerCase();
     suggestions.innerHTML = "";
@@ -25,16 +40,17 @@ input.addEventListener("input", function() {
         return mount.toLowerCase().includes(typed);
     });
 
-    matches.forEach(function(mount) {
+    for (let i = 0; i < 5; i++){
         const div = document.createElement("div");
-        div.textContent = mount;
+        const mountName = matches[i];
+        div.textContent = mountName;
         div.addEventListener("click", function() {
-            input.value = mount;
-            selectedMount = mount;
+            input.value = mountName;
+            selectedMount = mountName;
             suggestions.innerHTML = "";
         });
         suggestions.appendChild(div);
-    });
+    }
 });
 
 // Submit the guess on button click, submitGuess will check if a guess is fully entered or not
