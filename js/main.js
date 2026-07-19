@@ -82,7 +82,7 @@ function submitGuess() {
             console.log("Correct! It was: ", correctMount)
         }
         else{
-            console.log("Incorrect! It is not ", selectedMount);
+            console.log("Incorrect! It is not", selectedMount);
             selectedMount = null;
             input.value = "";
         }

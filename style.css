@@ -1,0 +1,15 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 10vh;
+}
+h1 {
+    border: 3px solid green; 
+}
+.info {
+    margin-top: -15px;
+    font-style: italic;
+    color: gray;
+}
